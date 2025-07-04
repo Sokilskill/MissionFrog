@@ -3,23 +3,27 @@ import { createSlice } from "@reduxjs/toolkit";
 const projectsSlice = createSlice({
   name: "project",
   initialState: [
-    { id: "2222", name: "Project 1", color: "green" },
-    { id: "3333", name: "Project 2", color: "red" },
+    // {
+    //   id: string,
+    //   name: string,
+    //   color: string (hex, rgb, color-name),
+    //   createdAt: "2025-06-30T15:38:41.676Z",
+    //   updatedAt: "2025-06-30T15:38:41.676Z",
+    // }
   ],
-
   reducers: {
     addProject: (state, action) => {
       const newProject = {
         id: Date.now().toString(),
         name: action.payload.name,
         color: action.payload.color,
-        createdAt: new Date().toLocaleDateString(),
-        updatedAt: new Date().toLocaleDateString(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
       state.push(newProject);
     },
     deleteProject: (state, action) => {
-      state = state.filter((project) => project.id !== action.payload);
+      return state.filter((project) => project.id !== action.payload);
     },
 
     updateProject: (state, action) => {

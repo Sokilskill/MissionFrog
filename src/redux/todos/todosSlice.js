@@ -2,18 +2,30 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const todosSlice = createSlice({
   name: "todos",
-  initialState: [],
+  initialState: [
+    // {
+    //   id: string,
+    //   projectId: string,
+    //   title: string,
+    //   color: string,
+    //   priority: "low" | "medium" | "high"
+    //   completed: true | false
+    //   createdAt: "2025-06-24T12:14:58.004Z",
+    //   updatedAt: "30.06.2025",
+    //   completedAt: "2025-06-28T10:09:36.284Z",
+    // },
+  ],
   reducers: {
     addTodo: (state, action) => {
       const newTodo = {
-        id: Date.now(),
+        id: Date.now().toString(),
         projectId: action.payload.projectId,
         title: action.payload.title,
         color: action.payload.color,
         priority: action.payload.priority,
         completed: false,
-        createdAt: new Date().toLocaleDateString(),
-        updatedAt: new Date().toLocaleDateString(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
       state.push(newTodo);
     },
@@ -22,7 +34,12 @@ const todosSlice = createSlice({
       const todo = state.find((t) => t.id === action.payload);
       if (todo) {
         todo.completed = !todo.completed;
-        todo.updatedAt = new Date().toLocaleDateString();
+        todo.updatedAt = new Date().toISOString();
+      }
+      if (todo.completed) {
+        todo.completedAt = new Date().toISOString();
+      } else {
+        delete todo.completedAt;
       }
     },
 
@@ -37,7 +54,7 @@ const todosSlice = createSlice({
         if (title !== undefined) todo.title = title;
         if (color !== undefined) todo.color = color;
         if (priority !== undefined) todo.priority = priority;
-        todo.updatedAt = new Date().toLocaleDateString();
+        todo.updatedAt = new Date().toISOString();
       }
     },
   },

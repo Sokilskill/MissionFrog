@@ -1,71 +1,94 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addProject } from "../redux/projects/projectsSlice";
+import Modal from "./Modal";
 
-const ProjectModal = () => {
+const ProjectModal = ({ isOpen, onClose }) => {
   const [color, setColor] = useState("#ffffff");
+  const [name, setName] = useState("");
+  const dispatch = useDispatch();
+
+  const handlerAddNewProject = (e) => {
+    e.preventDefault();
+    if (name) {
+      dispatch(
+        addProject({
+          name,
+          color,
+        })
+      );
+      setName("");
+      onClose();
+    }
+  };
+
   return (
-    <div
-      id="project-modal"
-      className="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto"
-    >
-      <div className="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto">
-        <div className="relative flex flex-col bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 className="font-semibold text-lg">Новий проект</h3>
-          </div>
-          <div className="p-4">
-            <form id="project-form">
-              <div className="mb-4">
-                <label
-                  htmlFor="project-name"
-                  className="block text-sm font-medium mb-1"
-                >
-                  Назва проекту
-                </label>
-                <input
-                  type="text"
-                  id="project-name"
-                  className="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4 py-2"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="project-color"
-                  className="block text-sm font-medium mb-1"
-                >
-                  Колір проекту
-                </label>
-                <input
-                  type="color"
-                  id="project-color"
-                  value={color}
-                  onChange={(e) => {
-                    setColor(e.target.value);
-                  }}
-                  className="w-full h-10 rounded-lg border-gray-300 dark:border-gray-600"
-                />
-              </div>
-            </form>
-          </div>
-          <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-2">
-            <button
-              type="button"
-              className="hs-dropdown-toggle py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition"
-              data-hs-overlay="#project-modal"
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <h3 className="text-xl font-bold mb-4 dark:text-gray-300">
+        Новий проект
+      </h3>
+
+      <form
+        id="project-form"
+        className="flex flex-col w-[100%]  max-w-[500px] min-w-[150px]  gap-4 dark:text-gray-300"
+        onSubmit={handlerAddNewProject}
+      >
+        <div className="flex1 flex-col w-full">
+          <div>
+            <label
+              htmlFor="project-name"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
             >
-              Скасувати
-            </button>
-            <button
-              id="save-project-btn"
-              type="button"
-              className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-500 text-white hover:bg-blue-600 transition"
+              Назва проекту
+            </label>
+            <input
+              type="text"
+              id="project-name"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-200"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="project-color"
+              className="block text-sm font-medium mb-1"
             >
-              Зберегти
-            </button>
+              Колір проекту
+            </label>
+            <input
+              type="color"
+              id="project-color"
+              className="w-full border-gray-300 dark:border-gray-600 md:rounded-lg  md:h-10"
+              value={color}
+              onChange={(e) => {
+                setColor(e.target.value);
+              }}
+            />
           </div>
         </div>
-      </div>
-    </div>
+        <div className="flex justify-center gap-2 mt-4">
+          <button
+            type="button"
+            onClick={onClose}
+            className="hs-dropdown-toggle py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+            data-hs-overlay="#project-modal"
+          >
+            Скасувати
+          </button>
+          <button
+            id="save-project-btn"
+            form="project-form"
+            type="submit"
+            className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-500 text-white hover:bg-blue-600 transition"
+          >
+            Зберегти
+          </button>
+        </div>
+      </form>
+    </Modal>
   );
 };
 
