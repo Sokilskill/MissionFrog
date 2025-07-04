@@ -1,40 +1,11 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectProjects } from "../redux/projects/projectSelector";
-import { addTodo } from "../redux/todos/todosSlice";
+import { useAddTodoForm } from "../hooks/useAddTodoForm";
 
 const AddTodoForm = () => {
-  const dispatch = useDispatch();
-
-  const [title, setTitle] = useState("");
-  const [priority, setPriority] = useState("medium");
-  const [color, setColor] = useState("#3b82f6");
-  const [projectId, setProjectId] = useState("all");
-
+  const { form, handleSubmit } = useAddTodoForm();
   const projects = useSelector(selectProjects);
 
-  const resetForm = () => {
-    setTitle("");
-    setPriority("medium");
-    setColor("#3b82f6");
-    setProjectId("all");
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!title.trim()) return;
-
-    const newTodo = {
-      title: title.trim(),
-      priority,
-      color,
-      projectId,
-    };
-
-    dispatch(addTodo(newTodo));
-    resetForm();
-  };
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
       <form id="todo-form" className="space-y-3" onSubmit={handleSubmit}>
@@ -44,9 +15,9 @@ const AddTodoForm = () => {
             id="todo-title"
             placeholder="Назва завдання..."
             className="flex-1 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            value={title}
+            value={form.title}
             onChange={(e) => {
-              setTitle(e.target.value);
+              form.setTitle(e.target.value);
             }}
             required
           />
@@ -64,9 +35,9 @@ const AddTodoForm = () => {
             <select
               id="todo-project"
               className="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700"
-              value={projectId}
+              value={form.projectId}
               onChange={(e) => {
-                setProjectId(e.target.value);
+                form.setProjectId(e.target.value);
               }}
             >
               <option value="all">All</option>
@@ -83,9 +54,9 @@ const AddTodoForm = () => {
             <select
               id="todo-priority"
               className="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700"
-              value={priority}
+              value={form.priority}
               onChange={(e) => {
-                setPriority(e.target.value);
+                form.setPriority(e.target.value);
               }}
             >
               <option value="low">Низький</option>
@@ -104,9 +75,9 @@ const AddTodoForm = () => {
             <input
               type="color"
               id="todo-color"
-              value={color}
+              value={form.color}
               onChange={(e) => {
-                setColor(e.target.value);
+                form.setColor(e.target.value);
               }}
               className=" border-gray-300 dark:border-gray-600 md:rounded-lg w-full md:h-10"
             />
