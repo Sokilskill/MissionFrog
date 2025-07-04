@@ -3,32 +3,37 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectProjects } from "../redux/projects/projectSelector";
 import { addTodo } from "../redux/todos/todosSlice";
 
-const AddForm = () => {
-  const [color, setColor] = useState("#3b82f6");
+const AddTodoForm = () => {
   const dispatch = useDispatch();
+
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState("medium");
+  const [color, setColor] = useState("#3b82f6");
   const [projectId, setProjectId] = useState("all");
 
   const projects = useSelector(selectProjects);
 
+  const resetForm = () => {
+    setTitle("");
+    setPriority("medium");
+    setColor("#3b82f6");
+    setProjectId("all");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!title.trim()) return;
+
     const newTodo = {
       title: title.trim(),
-      projectId: projectId,
-      priority: priority,
-      color: color,
+      priority,
+      color,
+      projectId,
     };
 
-    if (newTodo.title) {
-      console.log("Adding new todo:", newTodo);
-      dispatch(addTodo(newTodo));
-      setTitle("");
-      setColor("#3b82f6");
-      setPriority("medium");
-      setProjectId("all");
-    }
+    dispatch(addTodo(newTodo));
+    resetForm();
   };
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
@@ -91,7 +96,7 @@ const AddForm = () => {
 
           <div>
             <label
-              className="block text-sm font-medium mb-1"
+              className="block text-sm font-medium mb-1 "
               htmlFor="todo-color"
             >
               Колір
@@ -103,7 +108,7 @@ const AddForm = () => {
               onChange={(e) => {
                 setColor(e.target.value);
               }}
-              className="w-full h-10 rounded-lg border-gray-300 dark:border-gray-600"
+              className=" border-gray-300 dark:border-gray-600 md:rounded-lg w-full md:h-10"
             />
           </div>
         </div>
@@ -112,4 +117,4 @@ const AddForm = () => {
   );
 };
 
-export default AddForm;
+export default AddTodoForm;
