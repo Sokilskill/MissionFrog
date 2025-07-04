@@ -3,13 +3,20 @@ import { createSlice } from "@reduxjs/toolkit";
 const projectsSlice = createSlice({
   name: "project",
   initialState: [
-    { id: "1", name: "Project 1", color: "green" },
+    { id: "2222", name: "Project 1", color: "green" },
     { id: "3333", name: "Project 2", color: "red" },
   ],
 
   reducers: {
     addProject: (state, action) => {
-      state.push(action.payload);
+      const newProject = {
+        id: Date.now().toString(),
+        name: action.payload.name,
+        color: action.payload.color,
+        createdAt: new Date().toLocaleDateString(),
+        updatedAt: new Date().toLocaleDateString(),
+      };
+      state.push(newProject);
     },
     deleteProject: (state, action) => {
       state = state.filter((project) => project.id !== action.payload);
