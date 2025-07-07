@@ -4,8 +4,6 @@ import { selectProjectById } from "../redux/projects/projectSelector";
 import { addSelectedProjectId } from "../redux/filters/filtersSlice";
 
 const TodoList = ({ todoList, projects, allTodos }) => {
-  const dispatch = useDispatch();
-
   const orderProject = useSelector((state) =>
     selectProjectById(state, state.filters.selectedProjectId)
   );
@@ -24,12 +22,7 @@ const TodoList = ({ todoList, projects, allTodos }) => {
         <p className="p-4 text-center text-gray-500">
           В обраному проекті відсутні завдання. Додайте завдання.
         </p>
-        <button
-          className="ml-2 px-4 py-1 text-sm text-white rounded-full bg-red-500 hover:bg-red-700"
-          onClick={() => dispatch(addSelectedProjectId(null))}
-        >
-          повернутися до всіх завдань
-        </button>
+        <ResetProjectButton />
       </div>
     );
   }
@@ -63,14 +56,7 @@ const TodoList = ({ todoList, projects, allTodos }) => {
             </span>
           </div>
 
-          {orderProject && (
-            <button
-              className="ml-2 px-4 py-1 text-sm text-white rounded-full bg-red-500 hover:bg-red-700"
-              onClick={() => dispatch(addSelectedProjectId(null))}
-            >
-              повернутися до всіх завдань
-            </button>
-          )}
+          {orderProject && <ResetProjectButton />}
         </div>
       </div>
 
@@ -98,3 +84,16 @@ const TodoList = ({ todoList, projects, allTodos }) => {
 };
 
 export default TodoList;
+
+export const ResetProjectButton = () => {
+  const dispatch = useDispatch();
+
+  return (
+    <button
+      className="ml-2 px-4 py-1 text-sm text-white rounded-full bg-red-500 hover:bg-red-700"
+      onClick={() => dispatch(addSelectedProjectId(null))}
+    >
+      повернутися до всіх завдань
+    </button>
+  );
+};
