@@ -9,6 +9,8 @@ import { formatTodoDate, getPriorityClass } from "../utils";
 import { useState } from "react";
 import TodoEditModal from "./TodoEditModal";
 import Modal from "./Modal";
+import ModalActions from "./ModalActions";
+import Button from "./Button";
 
 const TodoItem = ({ todo, project }) => {
   const dispatch = useDispatch();
@@ -49,6 +51,11 @@ const TodoItem = ({ todo, project }) => {
     handleCloseEditModal();
   };
 
+  const handleDelete = () => {
+    dispatch(deleteTodo(todo.id));
+    handleCloseDeleteModal();
+  };
+
   return (
     <div className="p-4 flex items-start gap-3">
       <button
@@ -74,24 +81,11 @@ const TodoItem = ({ todo, project }) => {
             {todo.title}
           </h3>
 
-          <div className="flex gap-2">
-            <button
-              className="edit-todo text-gray-400 hover:text-blue-500 transition"
-              data-todo-id={todo.id}
-              aria-label="Редагувати завдання"
-              onClick={handleOpenEditModal}
-            >
-              <FaEdit />
-            </button>
-            <button
-              className="text-gray-400 hover:text-red-500 transition"
-              data-todo-id={todo.id}
-              aria-label="Видалити завдання"
-              onClick={handleOpenDeleteModal}
-            >
-              <FaTrashAlt />
-            </button>
-          </div>
+          <TodoActionButtons
+            onClickEdit={handleOpenEditModal}
+            onClickDelete={handleOpenDeleteModal}
+            todoId={todo.id}
+          />
         </div>
 
         <div className="mt-2 flex flex-col items-start justify-start  gap-2">
@@ -106,7 +100,9 @@ const TodoItem = ({ todo, project }) => {
 
             <span className="text-xs text-gray-500 dark:text-gray-400">
               {formattedCreatedDate}{" "}
-              {todo.completedAt && <span>- {formattedComletedDate}</span>}
+              {todo.completedAt && todo.completed && (
+                <span>- {formattedComletedDate}</span>
+              )}
             </span>
           </div>
           {project && (
@@ -123,32 +119,60 @@ const TodoItem = ({ todo, project }) => {
         isOpen={isEditModalOpen}
         onClose={handleCloseEditModal}
         todo={todo}
-        currentProject={project}
         onSave={handleSaveEdit}
       />
-      <Modal isOpen={isDeleteModalOpen} onClose={handleCloseDeleteModal}>
-        <div className="flex flex-col justify-center   max-w-[350px] text-white p-5 gap-3">
-          <h3 className="text-2xl">Задання буде видалено!</h3>
-          <div className="flex justify-center gap-6 mt-4">
-            <button
-              type="button"
-              onClick={handleCloseDeleteModal}
-              className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
-            >
-              Скасувати
-            </button>
-            <button
-              type="button"
-              onClick={() => dispatch(deleteTodo(todo.id))}
-              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
-            >
-              Видалити
-            </button>
-          </div>
-        </div>
-      </Modal>
+
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleDelete}
+      />
     </div>
   );
 };
 
 export default TodoItem;
+
+export const DeleteModal = ({ isOpen, onClose, onConfirm }) => {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <div className="flex flex-col justify-center max-w-[400px] min-w text-white p-5 gap-3 md:gap-8">
+        <h3 className="text-xl sm:text-2xl font-bold ">
+          Задання буде видалено!
+        </h3>
+
+        <ModalActions
+          onCancel={onClose}
+          onConfirm={onConfirm}
+          confirmLabel="Видалити"
+          confirmVariant="danger"
+        />
+      </div>
+    </Modal>
+  );
+};
+
+export const TodoActionButtons = ({ onClickEdit, onClickDelete, todoId }) => {
+  return (
+    <div className="flex gap-1">
+      <Button
+        variant="icon"
+        size="icon"
+        data-todo-id={todoId}
+        aria-label="Редагувати завдання"
+        onClick={onClickEdit}
+        icon={FaEdit}
+      ></Button>
+
+      <Button
+        className=" hover:text-red-500"
+        variant="icon"
+        size="icon"
+        data-todo-id={todoId}
+        aria-label="Видалити завдання"
+        onClick={onClickDelete}
+        icon={FaTrashAlt}
+      ></Button>
+    </div>
+  );
+};
