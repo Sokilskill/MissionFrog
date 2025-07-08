@@ -30,7 +30,7 @@ const Modal = ({ children, isOpen, onClose }) => {
       onClick={onClose}
     >
       <div
-        className="relative dark:bg-gray-900 p-5 sm:p-8 md:p-10 md:py-12 rounded-lg shadow-[0 4px 6px rgba(0, 0, 0, 0.1)] max-w-4xl "
+        className="relative  bg-white  shadow-2xl dark:bg-gray-900 p-5 sm:p-8 md:p-10 md:py-12 rounded-lg dark:shadow-[0 4px 6px rgba(0, 0, 0, 0.5)] max-w-4xl "
         onClick={(e) => e.stopPropagation()}
       >
         <Button
