@@ -9,7 +9,7 @@ const Filter = () => {
   const dispatch = useDispatch();
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
+    <div className="bg-white  dark:bg-gray-800 rounded-xl shadow p-4">
       <h2 className="font-semibold text-lg mb-4">Фільтри</h2>
       <div className="space-y-3">
         <div>
@@ -19,7 +19,7 @@ const Filter = () => {
           <select
             id="status"
             onChange={(e) => dispatch(setStatusFilter(e.target.value))}
-            className="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700"
+            className="w-full rounded-lg border bg-blue-50 border-gray-300 dark:border-gray-600 dark:bg-gray-700"
           >
             <option value="all">Всі</option>
             <option value="pending">Активні</option>
@@ -34,7 +34,7 @@ const Filter = () => {
           <select
             id="priority"
             onChange={(e) => dispatch(setPriorityFilter(e.target.value))}
-            className="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700"
+            className="w-full rounded-lg border bg-blue-50 border-gray-300 dark:border-gray-600 dark:bg-gray-700"
           >
             <option value="all">Всі</option>
             <option value="high">Високий</option>
@@ -50,7 +50,7 @@ const Filter = () => {
           <select
             id="sort"
             onChange={(e) => dispatch(setSortBy(e.target.value))}
-            className="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700"
+            className="w-full rounded-lg border bg-blue-50 border-gray-300 dark:border-gray-600 dark:bg-gray-700"
           >
             <option value="date-asc">Дата (старі → нові)</option>
             <option value="date-desc">Дата (нові → старі)</option>
