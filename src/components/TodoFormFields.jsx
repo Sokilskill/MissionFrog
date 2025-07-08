@@ -29,7 +29,7 @@ const TodoFormFields = ({
           id={`${prefix}-title`}
           type="text"
           placeholder="Назва завдання..."
-          className="flex-1 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="flex-1 rounded-lg border bg-blue-100 border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           value={title}
           onChange={(e) => {
             setTitle(e.target.value);
@@ -38,7 +38,12 @@ const TodoFormFields = ({
         />
 
         {showSubmitButton && (
-          <Button type="submit" icon={FaPlus} aria-label="Додати нове завдання">
+          <Button
+            type="submit"
+            variant="default"
+            icon={FaPlus}
+            aria-label="Додати нове завдання"
+          >
             Додати
           </Button>
         )}
@@ -54,7 +59,7 @@ const TodoFormFields = ({
           </label>
           <select
             id={`${prefix}-project`}
-            className="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700"
+            className="w-full rounded-lg border bg-blue-100 border-gray-300 dark:border-gray-600 dark:bg-gray-700"
             value={projectId}
             onChange={(e) => {
               setProjectId(e.target.value);
@@ -78,7 +83,7 @@ const TodoFormFields = ({
           </label>
           <select
             id={`${prefix}-priority`}
-            className="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700"
+            className="w-full rounded-lg border bg-blue-100 border-gray-300 dark:border-gray-600 dark:bg-gray-700"
             value={priority}
             onChange={(e) => {
               setPriority(e.target.value);
@@ -103,7 +108,7 @@ const TodoFormFields = ({
             onChange={(e) => {
               setColor(e.target.value);
             }}
-            className=" border-gray-300 dark:border-gray-600 md:rounded-lg w-full md:h-10"
+            className="  border-gray-300 dark:border-gray-600 md:rounded-lg w-full md:h-10"
           />
         </div>
       </div>
