@@ -12,7 +12,7 @@ const sizes = {
   sm: "text-sm px-3 py-1.5",
   md: "text-base px-4 py-2 md:w-full md:max-w-[90px]",
   lg: "text-lg px-5 py-3",
-  icon: "w-7 h-7 p-0",
+  icon: "w-7 h-7 p-2",
 };
 
 const Button = ({
