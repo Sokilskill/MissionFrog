@@ -4,6 +4,6 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), tailwindcss()],
-  base: "todo-app-frog",
+  plugins: [react(), tailwindcss()],
+  base: "/todo-app-frog",
 });
