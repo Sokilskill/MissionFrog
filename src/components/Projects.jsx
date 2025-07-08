@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectProjects } from "../redux/projects/projectSelector";
 import { addSelectedProjectId } from "../redux/filters/filtersSlice";
 import Button from "./Button";
+import ThemeToggle from "./ThemeToggle";
 
 const Projects = () => {
   const [showModal, setShowModal] = useState(false);
@@ -30,14 +31,17 @@ const Projects = () => {
       <div className="flex justify-between items-center mb-4">
         <h2 className="font-semibold text-lg">Проекти</h2>
 
-        <Button
-          variant=""
-          className="text-blue-500 hover:text-blue-700"
-          size="sm"
-          aria-label="Додати новий проєкт"
-          onClick={() => setShowModal(true)}
-          icon={FaPlus}
-        ></Button>
+        <div className="flex gap-1">
+          <ThemeToggle size="icon" />
+
+          <Button
+            className="text-blue-500 hover:text-blue-700"
+            size="icon"
+            aria-label="Додати новий проєкт"
+            onClick={() => setShowModal(true)}
+            icon={FaPlus}
+          ></Button>
+        </div>
       </div>
 
       <ul className="space-y-2 overflow-auto max-h-[200px]">
