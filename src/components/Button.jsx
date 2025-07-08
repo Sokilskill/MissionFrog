@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 const variants = {
   default: "bg-blue-600 text-white hover:bg-blue-700",
   secondary: "bg-gray-200 text-gray-800 hover:bg-gray-300",
@@ -8,7 +10,7 @@ const variants = {
 
 const sizes = {
   sm: "text-sm px-3 py-1.5",
-  md: "text-base px-4 py-2 w-full md:max-w-[90px]",
+  md: "text-base px-4 py-2 md:w-full md:max-w-[90px]",
   lg: "text-lg px-5 py-3",
   icon: "w-7 h-7 p-0",
 };
@@ -16,11 +18,12 @@ const sizes = {
 const Button = ({
   type = "button",
   onClick,
-  variant = "default",
+  variant = "",
   size = "md",
   disabled = false,
   fullWidth = false,
   icon: Icon = null,
+  iconBox = "4px",
   children,
   className = "",
   ...rest
@@ -35,17 +38,19 @@ const Button = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`
-        ${base}
-        ${variants[variant]}
-        ${sizes[size]}
-        ${widthClass}
-        ${disabledClass}
-        ${className}
-      `}
+      className={clsx(
+        base,
+        variants[variant],
+        sizes[size],
+        widthClass,
+        disabledClass,
+        className
+      )}
       {...rest}
     >
-      {Icon && <Icon className="h-4 w-4" />}
+      {Icon && (
+        <Icon className={clsx(`w-[${iconBox}] h-[${iconBox}]`, "shrink-0")} />
+      )}
       {children}
     </button>
   );
