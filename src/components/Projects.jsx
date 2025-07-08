@@ -40,11 +40,7 @@ const Projects = () => {
         ></Button>
       </div>
 
-      <ul
-        className="space-y-2 overflow-auto max-h-[200px] scrollbar scrollbar-thumb-gray-400 scrollbar-track-gray-200
-                   dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-700
-                   scrollbar-thin hover:scrollbar-thumb-blue-500"
-      >
+      <ul className="space-y-2 overflow-auto max-h-[200px]">
         {projects.map((project) => (
           <li
             key={project.id}
@@ -53,12 +49,16 @@ const Projects = () => {
               borderLeftColor: project.color,
               borderLeftWidth: "6px",
               borderRadius: "8px",
-              backgroundColor: orderProject === project.id ? "red" : "",
+              backgroundColor: orderProject === project.id ? "#ef0000d1" : "",
             }}
-            onClick={() => handleSelectProject(project.id)}
           >
             <div className="flex justify-between">
-              {project.name}
+              <button
+                className="flex-1 flex justify-start text-left    "
+                onClick={() => handleSelectProject(project.id)}
+              >
+                <p>{project.name}</p>
+              </button>
 
               <Button
                 variant="icon"
