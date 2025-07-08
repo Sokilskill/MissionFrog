@@ -8,7 +8,6 @@ export const useTheme = () => {
     const prefersDark = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
-    console.log(stored);
 
     const initialTheme = stored || (prefersDark ? "dark" : "light");
     setTheme(initialTheme);
