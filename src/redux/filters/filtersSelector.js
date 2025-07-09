@@ -6,11 +6,13 @@ const selectFilters = (state) => state.filters;
 export const filterTodos = createSelector(
   [selectTodos, selectFilters],
   (todos, filters) => {
-    if (!todos || todos.length === 0) {
+    const actualTodos = Array.isArray(todos) ? todos : [];
+
+    if (actualTodos.length === 0) {
       return [];
     }
 
-    let filtered = [...todos];
+    let filtered = [...actualTodos];
 
     if (filters.selectedProjectId) {
       filtered = filtered.filter(
