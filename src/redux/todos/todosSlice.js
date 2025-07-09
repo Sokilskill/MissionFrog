@@ -48,12 +48,13 @@ const todosSlice = createSlice({
     },
 
     updateTodo: (state, action) => {
-      const { id, title, color, priority } = action.payload;
+      const { id, title, color, priority, projectId } = action.payload;
       const todo = state.find((t) => t.id === id);
       if (todo) {
         if (title !== undefined) todo.title = title;
         if (color !== undefined) todo.color = color;
         if (priority !== undefined) todo.priority = priority;
+        if (projectId !== undefined) todo.projectId = projectId;
         todo.updatedAt = new Date().toISOString();
       }
     },
