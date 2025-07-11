@@ -1,38 +1,86 @@
-import { useSelector } from "react-redux";
-import { selectTodos } from "../redux/todos/todosSelector";
+import { useDispatch, useSelector } from "react-redux";
 import TodoItem from "./TodoItem";
-import { selectProjects } from "../redux/projects/projectSelector";
+import { selectProjectById } from "../redux/projects/projectSelector";
+import {
+  addSelectedProjectId,
+  clearFilters,
+} from "../redux/filters/filtersSlice";
+import Button from "./Button";
+import { selectFilters } from "../redux/filters/filtersSelector";
 
-const TodoList = () => {
-  const todoList = useSelector(selectTodos);
-  const projects = useSelector(selectProjects);
+const TodoList = ({ todoList, projects, allTodos }) => {
+  const dispatch = useDispatch();
 
-  //  const selectTodosWithProjects = (state) => {
-  //   return state.todos.map((todo) => {
-  //     const project = state.projects.find((p) => p.id === todo.projectId);
-  //     return { ...todo, project };
-  //   });
-  // };
+  const isSelectFilters = useSelector(selectFilters);
+  const orderProject = useSelector((state) =>
+    selectProjectById(state, state.filters.selectedProjectId)
+  );
 
-  if (todoList.length === 0) {
+  if (allTodos.length === 0) {
     return (
       <p className="p-4 text-center text-gray-500">
         Немає завдань. Додайте нове!
       </p>
     );
   }
+
+  if (
+    orderProject &&
+    todoList.length === 0 &&
+    isSelectFilters.priority === "all" &&
+    isSelectFilters.status === "all"
+  ) {
+    return (
+      <div className="flex flex-col items-center">
+        <p className="p-4 text-center text-gray-500">
+          В обраному проекті відсутні завдання. Додайте завдання.
+        </p>
+        <ResetProjectButton />
+      </div>
+    );
+  }
+
+  if (
+    (todoList.length === 0 && isSelectFilters.priority !== "all") ||
+    isSelectFilters.status !== "all"
+  ) {
+    return (
+      <div className="flex flex-col items-center ">
+        <p className="p-4 text-center text-gray-500">
+          За вашим фільтром - завдань не знайдено.
+        </p>
+
+        <Button variant="danger" onClick={() => dispatch(clearFilters())}>
+          {" "}
+          Скинути фільтр{" "}
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow overflow-hidden">
       <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-        <h2 className="font-semibold text-lg flex items-center">
-          <span id="current-project-title">Всі завдання</span>
-          <span
-            id="todo-count"
-            className="ml-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded-full"
-          >
-            {todoList.length} <span className="sr-only">завдань</span>
-          </span>
-        </h2>
+        <div className="font-semibold text-lg flex gap-1 items-center justify-between  ">
+          <div>
+            <span id="current-project-title">Всі завдання </span>
+
+            {orderProject && (
+              <>
+                <span> за обраним проектом </span>
+              </>
+            )}
+
+            <span
+              id="todo-count"
+              className="ml-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded-full"
+            >
+              {todoList.length}
+            </span>
+          </div>
+
+          {orderProject && <ResetProjectButton />}
+        </div>
       </div>
 
       <ul
@@ -59,3 +107,16 @@ const TodoList = () => {
 };
 
 export default TodoList;
+
+export const ResetProjectButton = () => {
+  const dispatch = useDispatch();
+
+  return (
+    <button
+      className="ml-2 px-4 py-1 text-sm text-white rounded-full bg-red-500 hover:bg-red-700"
+      onClick={() => dispatch(addSelectedProjectId(null))}
+    >
+      повернутися до всіх завдань
+    </button>
+  );
+};
