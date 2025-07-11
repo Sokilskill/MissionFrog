@@ -21,6 +21,10 @@ const filtersSlice = createSlice({
     addSelectedProjectId: (state, action) => {
       state.selectedProjectId = action.payload;
     },
+    clearFilters: (state) => {
+      state.status = "all";
+      state.priority = "all";
+    },
   },
 });
 
@@ -29,5 +33,6 @@ export const {
   setPriorityFilter,
   setSortBy,
   addSelectedProjectId,
+  clearFilters,
 } = filtersSlice.actions;
 export default filtersSlice.reducer;

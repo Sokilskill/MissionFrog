@@ -1,9 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import TodoItem from "./TodoItem";
 import { selectProjectById } from "../redux/projects/projectSelector";
-import { addSelectedProjectId } from "../redux/filters/filtersSlice";
+import {
+  addSelectedProjectId,
+  clearFilters,
+} from "../redux/filters/filtersSlice";
+import Button from "./Button";
+import { selectFilters } from "../redux/filters/filtersSelector";
 
 const TodoList = ({ todoList, projects, allTodos }) => {
+  const dispatch = useDispatch();
+
+  const isSelectFilters = useSelector(selectFilters);
   const orderProject = useSelector((state) =>
     selectProjectById(state, state.filters.selectedProjectId)
   );
@@ -16,7 +24,12 @@ const TodoList = ({ todoList, projects, allTodos }) => {
     );
   }
 
-  if (orderProject && todoList.length === 0) {
+  if (
+    orderProject &&
+    todoList.length === 0 &&
+    isSelectFilters.priority === "all" &&
+    isSelectFilters.status === "all"
+  ) {
     return (
       <div className="flex flex-col items-center">
         <p className="p-4 text-center text-gray-500">
@@ -27,11 +40,21 @@ const TodoList = ({ todoList, projects, allTodos }) => {
     );
   }
 
-  if (!orderProject && todoList.length === 0) {
+  if (
+    (todoList.length === 0 && isSelectFilters.priority !== "all") ||
+    isSelectFilters.status !== "all"
+  ) {
     return (
-      <p className="p-4 text-center text-gray-500">
-        За вашим фільтром - завдань не знайдено.
-      </p>
+      <div className="flex flex-col items-center ">
+        <p className="p-4 text-center text-gray-500">
+          За вашим фільтром - завдань не знайдено.
+        </p>
+
+        <Button variant="danger" onClick={() => dispatch(clearFilters())}>
+          {" "}
+          Скинути фільтр{" "}
+        </Button>
+      </div>
     );
   }
 
